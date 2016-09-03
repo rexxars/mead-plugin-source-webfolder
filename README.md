@@ -25,22 +25,22 @@ module.exports = {
   ],
 
   // Define a source using the webfolder proxy
-  sources: [
-    {
-      name: 'my-webfolder-source',
-      adapter: 'webfolder',
+  sources: [{
+    name: 'my-webfolder-source',
+    adapter: {
+      type: 'webfolder',
       config: {
         // All URLs will be relative to this
         baseUrl: 'http://mead.science/images',
-
+  
         // Optional timeout in milliseconds before giving up the request (default: 7500)
         timeout: 3500,
-
+  
         // Optional number of retries to attempt when encountering errors, before giving up (default: 3)
         retries: 1
       }
     }
-  ]
+  }]
 }
 ```
 
