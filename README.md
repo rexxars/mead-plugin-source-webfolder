@@ -32,12 +32,9 @@ module.exports = {
       config: {
         // All URLs will be relative to this
         baseUrl: 'http://mead.science/images',
-  
+
         // Optional timeout in milliseconds before giving up the request (default: 7500)
-        timeout: 3500,
-  
-        // Optional number of retries to attempt when encountering errors, before giving up (default: 3)
-        retries: 1
+        timeout: 3500
       }
     }
   }]

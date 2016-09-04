@@ -1,20 +1,10 @@
 /* eslint-disable id-length, no-sync */
 const http = require('http')
 const test = require('tape')
-const once = require('lodash.once')
 const plugin = require('..')
 
 const webfolderSource = plugin.handler
 const baseUrl = 'http://127.0.0.1:43871/'
-const readStream = (stream, callback) => {
-  const chunks = []
-  const src = webfolderSource({baseUrl})
-  const cb = once(callback)
-  stream
-    .on('data', d => chunks.push(d))
-    .on('error', err => cb(src.processStreamError(err)))
-    .on('end', () => cb(null, Buffer.concat(chunks)))
-}
 
 test('has plugin props', t => {
   ['name', 'type', 'handler'].forEach(prop => {
@@ -60,13 +50,10 @@ test('provides bad gateway for remote 500s', t => {
     res.end('Internal Server Error')
   })
 
-  const onStreamResponse = (err, stream) => {
-    t.ifError(err, 'should not error')
-    readStream(stream, readErr => {
-      t.ok(readErr instanceof Error, 'should error')
-      t.equal(readErr.output.statusCode, 502, 'should give bad gateway on 5xx')
-      srv.close(t.end)
-    })
+  const onStreamResponse = err => {
+    t.ok(err instanceof Error, 'should error')
+    t.equal(err.output.statusCode, 502, 'should give bad gateway on 5xx')
+    srv.close(t.end)
   }
 
   const streamImage = () => {
@@ -83,13 +70,10 @@ test('provides passes on remote error for 4xx', t => {
     res.end('Bad Request - Missing some kind of parameter')
   })
 
-  const onStreamResponse = (err, stream) => {
-    t.ifError(err, 'should not error')
-    readStream(stream, readErr => {
-      t.ok(readErr instanceof Error, 'should error')
-      t.equal(readErr.output.statusCode, 401, 'should pass on 401')
-      srv.close(t.end)
-    })
+  const onStreamResponse = err => {
+    t.ok(err instanceof Error, 'should error')
+    t.equal(err.output.statusCode, 401, 'should pass on 401')
+    srv.close(t.end)
   }
 
   const streamImage = () => {

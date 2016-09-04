@@ -19,7 +19,6 @@ function webfolderSource(config) {
     allowPrivateHosts: true,
     allowRequest: config.allowRequest,
     timeout: config.timeout,
-    retries: config.retries,
     secureUrlToken: 'unused'
   })
 
