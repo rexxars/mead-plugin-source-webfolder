@@ -28,7 +28,8 @@ function webfolderSource(config) {
     requiresSignedUrls: false
   }
 
-  function getImageStream(urlPath, callback) {
+  function getImageStream(context, callback) {
+    const {urlPath} = context
     const imageUrl = url.format(Object.assign({}, parsedBaseUrl, {
       pathname: url.resolve(parsedBaseUrl.pathname, urlPath)
     }))
