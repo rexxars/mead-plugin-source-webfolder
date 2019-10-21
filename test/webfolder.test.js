@@ -37,7 +37,7 @@ test('throws on non-http/https url', t => {
 })
 
 test('should 404 if dotting out of base url', t => {
-  webfolderSource({baseUrl: 'http://localhost/foo'}).getImageStream('../../../foo.png', err => {
+  webfolderSource({baseUrl: 'http://localhost/foo'}).getImageStream({urlPath: '../../../foo.png'}, err => {
     t.ok(err, 'should error')
     t.is(err.output.statusCode, 404, 'should 404')
     t.end()
@@ -58,7 +58,7 @@ test('provides bad gateway for remote 500s', t => {
 
   const streamImage = () => {
     webfolderSource({baseUrl, allowPrivateHosts: true})
-      .getImageStream('image.png', onStreamResponse)
+      .getImageStream({urlPath: 'image.png'}, onStreamResponse)
   }
 
   srv.listen(43871, streamImage)
@@ -77,7 +77,7 @@ test('provides passes on remote error for 4xx', t => {
   }
 
   const streamImage = () => {
-    webfolderSource({baseUrl, allowPrivateHosts: true}).getImageStream('image.png', onStreamResponse)
+    webfolderSource({baseUrl, allowPrivateHosts: true}).getImageStream({urlPath: 'image.png'}, onStreamResponse)
   }
 
   srv.listen(43871, streamImage)
